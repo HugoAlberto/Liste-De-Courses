@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+      	android:text="@string/dashboard_title"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:layout_marginTop="20dip"/>
+    <Button
+        android:id="@+id/action_admin"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dashboard_b1"
+        android:textSize="20sp"
+        android:layout_marginTop="50dip" />
+    <Button
+        android:id="@+id/action_liste"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dashboard_b2"
+        android:textSize="20sp"/>
+    <Button
+        android:id="@+id/action_courses"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dashboard_b3"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/logout"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="50dip" />
+
+</LinearLayout>

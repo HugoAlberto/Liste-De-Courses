@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Shopping List</string>
+    <string name="action_magasin">Radius management</string>
+    <string name="action_liste">Shopping List</string>
+    <string name="action_courses">Do shopping!</string>
+    <string name="action_admin">Account administration</string>
+    <string name="lib_btEnregistrer">Register</string>
+    <string name="Magasin">Radius management:</string>
+    <string name="laListe">Current list:</string>
+    <string name="laListe2">Items within the list:</string>
+    <string name="rayon">Radius:</string>
+    <string name="produit">Product:</string>
+    <string name="quantite">Quantity:</string>
+    <string name="ajouter">Add</string>
+    <string name="ajouterListe">Add a new product</string>
+    <string name="title_activity_activite_faire_courses">Do shopping</string>
+    <string name="faire_courses">Do shopping!</string>
+    <string name="caddy">Got it !</string>
+    <string name="reporter">Not now</string>
+    <string name="annuler">Cancel</string>
+    <string name="modifier">Modify</string>
+    <string name="supprimer">Delete</string>
+    <string name="nomRayon">Radius name:</string>
+    <string name="title_activity_administration">AdministrationActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="dashboard_title">Shopping List Homepage</string>
+    <string name="dashboard_b1">Account administration</string>
+    <string name="dashboard_b2">My shopping List</string>
+    <string name="dashboard_b3">Shopping</string>
+    <string name="logout">Logout Me</string>
+    <string name="mail">Email</string>
+    <string name="pass">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="name">Full Name</string>
+    <string name="passModif">Change the actual password :</string>
+    <string name="modif">Modify</string>
+    <string name="shareLists">Automatic list sharing :</string>
+    <string name="share">Share</string>
+    <string name="shared">Users you share your lists with :</string>
+    <string name="DPass">***********</string>
+    <string name="textShare">Enter an Email here</string>
+
+</resources>

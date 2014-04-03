@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutPrincipale"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/Magasin"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    <ListView
+        android:id="@+id/listViewRayons"
+        android:layout_width="fill_parent"
+        android:layout_height="382dp"
+        android:choiceMode="multipleChoice" 
+        android:textSize="20sp">
+    </ListView>
+
+    <View
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:background="#33B5E5"/>
+    
+        <LinearLayout
+            android:id="@+id/layoutBoutons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom|center_horizontal" >
+
+            <Button
+                android:id="@+id/buttonAjouterRayon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/ajouter" />
+
+            <Button
+                android:id="@+id/buttonModifierRayon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/modifier" />
+
+            <Button
+                android:id="@+id/buttonSupprimerRayon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/supprimer" />
+        </LinearLayout>
+
+</LinearLayout>
+
