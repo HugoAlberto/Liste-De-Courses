@@ -8,7 +8,7 @@
     <string name="action_admin">Account administration</string>
     <string name="lib_btEnregistrer">Register</string>
     <string name="Magasin">Radius management:</string>
-    <string name="laListe">Current list:</string>
+    <string name="laListe">Current list :</string>
     <string name="laListe2">Items within the list:</string>
     <string name="rayon">Radius:</string>
     <string name="produit">Product:</string>
@@ -18,7 +18,6 @@
     <string name="title_activity_activite_faire_courses">Do shopping</string>
     <string name="faire_courses">Do shopping!</string>
     <string name="caddy">Got it !</string>
-    <string name="reporter">Not now</string>
     <string name="annuler">Cancel</string>
     <string name="modifier">Modify</string>
     <string name="supprimer">Delete</string>
@@ -42,5 +41,8 @@
     <string name="shared">Users you share your lists with :</string>
     <string name="DPass">***********</string>
     <string name="textShare">Enter an Email here</string>
+    <string name="nomProduit">Product name :</string>
+    <string name="qteProduit">Quantity :</string>
+    
 
 </resources>

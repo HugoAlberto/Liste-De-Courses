@@ -56,7 +56,7 @@ public class AdministrationActivity extends BaseActivity {
 		
 		SharedPreferences pref = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
 	    final String id = pref.getString(PREF_ID, null);
-		String adresse=baseUrl+"index.php?tag=administration&login="+id;
+		String adresse=baseUrl+"index.php?tag=listSharedWith&login="+id;
 		accessWebService(adresse);
 		
 		setContentView(R.layout.activity_administration);
@@ -85,7 +85,7 @@ public class AdministrationActivity extends BaseActivity {
 		btnDelete.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				String userMail = userSpinner.getSelectedItem().toString();
-				String adresse=baseUrl+"index.php?tag=deleteUser&delete="+userMail+"&from="+id;
+				String adresse=baseUrl+"index.php?tag=deleteSharedUser&delete="+userMail+"&from="+id;
 				accessWebService(adresse);
 				Log.i("LOGIN",adresse);
 			}

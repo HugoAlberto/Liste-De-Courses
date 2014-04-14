@@ -11,10 +11,9 @@ import org.json.JSONObject;
 public class FaireCourseActivity extends BaseActivity {
 	
 	Button btnShopping;
-	Button btnDelete;
 	private AdapterExpandableRayonProduit monAdapter;
-	private String url = "faireCourses.php";
-	public String url(){return baseUrl+url;};
+	private String url = "index.php";
+	public String url(){return baseUrl+url+"?tag=listDoShopping";};
 	private ExpandableListView listeViewDesProduitsDeLaListeParRayons;
 
 	@Override
@@ -26,24 +25,7 @@ public class FaireCourseActivity extends BaseActivity {
 		btnShopping.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
 				boolean supressionAEffectuer=false;
-				String adresse = url()+"?action=acheter";
-				for(int i=0;i<monAdapter.getEnsRayon().getNbRayon();i++) {
-					for(int j=0;j<monAdapter.getEnsRayon().getRayon(i).getNbArticle();j++) {
-						if(monAdapter.getEnsRayon().getRayon(i).getArticle(j).isSelected()) {
-							String prod = monAdapter.getEnsRayon().getRayon(i).getArticle(j).getNo();
-							adresse+="&tabNoProduit[]="+prod;
-							supressionAEffectuer=true;
-						}
-					}
-				}
-				if(supressionAEffectuer)accessWebService(adresse);
-			}
-		});		
-		btnDelete = (Button) findViewById(R.id.buttonDelete);
-		btnDelete.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View arg0) {
-				boolean supressionAEffectuer=false;
-				String adresse = url()+"?action=annuler";
+				String adresse = url()+"?tag=buyProduct";
 				for(int i=0;i<monAdapter.getEnsRayon().getNbRayon();i++) {
 					for(int j=0;j<monAdapter.getEnsRayon().getRayon(i).getNbArticle();j++) {
 						if(monAdapter.getEnsRayon().getRayon(i).getArticle(j).isSelected()) {

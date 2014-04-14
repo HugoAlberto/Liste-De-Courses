@@ -35,7 +35,7 @@ public class AdapterExpandableRayonProduit extends BaseExpandableListAdapter {
 	}
 
 	/**
-	 * Renvoi le nombre d'article du rayon à l'indice groupPosition
+	 * Renvoi le nombre d'article du rayon et l'indice groupPosition
 	 */
 	@Override
 	public int getChildrenCount(int groupPosition) {
@@ -105,7 +105,6 @@ public class AdapterExpandableRayonProduit extends BaseExpandableListAdapter {
 			view = inflator.inflate(R.layout.produit_layout_checkable, null);
 			final ViewHolder viewHolder = new ViewHolder();
 			viewHolder.textQte = (TextView) view.findViewById(R.id.itemQuantite);
-			viewHolder.textNumero = (TextView) view.findViewById(R.id.itemNumeroProduitDsListe);
 			viewHolder.textLibelle = (TextView) view.findViewById(R.id.itemLibelleProduitDsListe);
 			viewHolder.checkbox = (CheckBox) view.findViewById(R.id.itemCheckBoxProdDsListe);
 			
@@ -123,7 +122,6 @@ public class AdapterExpandableRayonProduit extends BaseExpandableListAdapter {
 			((ViewHolder) view.getTag()).checkbox.setTag(lesRayons.getRayon(groupPosition).getArticle(childPosition));
 		}
 		ViewHolder holder = (ViewHolder) view.getTag();
-		holder.textNumero.setText(lesRayons.getRayon(groupPosition).getArticle(childPosition).getNo());
 		holder.textLibelle.setText(lesRayons.getRayon(groupPosition).getArticle(childPosition).getNom());
 		holder.textQte.setText(lesRayons.getRayon(groupPosition).getArticle(childPosition).getQte());
 		holder.checkbox.setChecked(lesRayons.getRayon(groupPosition).getArticle(childPosition).isSelected());

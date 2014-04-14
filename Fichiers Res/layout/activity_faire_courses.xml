@@ -18,43 +18,23 @@
         android:text="@string/action_courses"
         android:textSize="25sp" />
 
+    <Button
+        android:id="@+id/buttonPoserDansCaddy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/caddy" />
+
     <ExpandableListView
         android:id="@+id/expandableListViewProduits"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_above="@+id/ButtonRepporter"
-        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/buttonPoserDansCaddy"
+        android:layout_alignLeft="@+id/buttonPoserDansCaddy"
         android:layout_below="@+id/textView2"
-        android:layout_marginBottom="15dp"
-        android:layout_marginTop="15dp"
         android:scrollbars="horizontal" >
+
     </ExpandableListView>
-
-    <Button
-        android:id="@+id/buttonPoserDansCaddy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/expandableListViewProduits"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:text="@string/caddy" />
-
-    <Button
-        android:id="@+id/ButtonRepporter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonPoserDansCaddy"
-        android:layout_alignBottom="@+id/buttonPoserDansCaddy"
-        android:layout_centerHorizontal="true"
-        android:text="@string/reporter" />
-
-    <Button
-        android:id="@+id/buttonDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/ButtonRepporter"
-        android:layout_alignBottom="@+id/ButtonRepporter"
-        android:layout_alignRight="@+id/expandableListViewProduits"
-        android:text="@string/supprimer" />
 
 </RelativeLayout>

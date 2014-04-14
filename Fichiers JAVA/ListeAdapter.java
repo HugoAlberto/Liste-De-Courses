@@ -28,7 +28,6 @@ public class ListeAdapter extends ArrayAdapter<ModelListe> {
 	}
 	
 	static class ViewHolder {
-		protected TextView textNumero;
 		protected TextView textLibelle;
 		protected TextView textQte;
 		protected CheckBox checkbox;
@@ -41,7 +40,6 @@ public class ListeAdapter extends ArrayAdapter<ModelListe> {
 			LayoutInflater inflator = context.getLayoutInflater();
 			view = inflator.inflate(R.layout.produit_a_acheter_layout, null);
 			final ViewHolder viewHolder = new ViewHolder();
-			viewHolder.textNumero = (TextView) view.findViewById(R.id.itemNumeroProduit);
 			viewHolder.textLibelle = (TextView) view.findViewById(R.id.itemLibelleProduit);
 			viewHolder.textQte = (TextView) view.findViewById(R.id.itemQuantite);
 			viewHolder.checkbox = (CheckBox) view.findViewById(R.id.checkbox);
@@ -60,9 +58,8 @@ public class ListeAdapter extends ArrayAdapter<ModelListe> {
 			((ViewHolder) view.getTag()).checkbox.setTag(list.get(position));
 		}
 		ViewHolder holder = (ViewHolder) view.getTag();
-		holder.textNumero.setText(list.get(position).getNo());
 		holder.textLibelle.setText(list.get(position).getNom());
-		holder.textQte.setText(list.get(position).getNo());
+		holder.textQte.setText(list.get(position).getQte());
 		holder.checkbox.setChecked(list.get(position).isSelected());
 		return view;
 	}

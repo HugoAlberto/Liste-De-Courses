@@ -21,7 +21,7 @@ import android.widget.Spinner;
 
 public class RemplirListe extends BaseActivity{
 	
-	private String url = "listeRayons.php";
+	private String url = "index.php?tag=radiusList";
 	public String url(){return baseUrl+url;};
 	/**
 	 * Radius spinner
@@ -74,7 +74,7 @@ public class RemplirListe extends BaseActivity{
 		    	@SuppressWarnings("unchecked")
 				String nomDuRayon=((HashMap<String,String>)(spinnerRayon.getSelectedItem())).get("rayonLib");
 		    	Log.i("ListeDeCourse",nomDuRayon);
-	            accessWebService(baseUrl+"listeProduits.php?rayon="+nomDuRayon);
+	            accessWebService(baseUrl+"index.php?tag=productListFromRadius&rayon="+nomDuRayon);
 		    }
 		    public void onNothingSelected(AdapterView<?> parent) {
 		    // Another interface callback
@@ -100,7 +100,7 @@ public class RemplirListe extends BaseActivity{
 				SimpleAdapter sARayon = new SimpleAdapter(this,listeDesMapsRayon,R.layout.rayon_layout,new String[] { "rayonLib" },new int[] { R.id.itemLibelle});
 				try{
 					spinnerRayon.setAdapter(sARayon);
-					String adresse=baseUrl+"listeCourses.php?action=vue&id="+id;
+					String adresse=baseUrl+"index.php?tag=productList&id="+id;
 					accessWebService(adresse);
 				}
 				catch(NullPointerException e){
@@ -117,7 +117,7 @@ public class RemplirListe extends BaseActivity{
 						String number = jsonChildNode.optString("produitId");
 						listeDesMapsProduit.add(creerMapProduit(name, number));
 					}
-					SimpleAdapter saProduit = new SimpleAdapter(this,listeDesMapsProduit,R.layout.produit_layout,new String[] { "produitLib" },new int[] { R.id.itemLibelleProduit});
+					SimpleAdapter saProduit = new SimpleAdapter(this,listeDesMapsProduit,R.layout.produit_layout,new String[] { "produitLib" },new int[] { R.id.itemLibelleRayon});
 					try{
 						spinnerProduit.setAdapter(saProduit);
 					}
@@ -127,8 +127,7 @@ public class RemplirListe extends BaseActivity{
 				}
 				else{
 					jsonMainNode = jsonResponse.optJSONArray("listeDeCourse");
-					Log.i("ListeDeCourse",jsonMainNode.toString());
-					if(jsonMainNode!=null){
+					if(jsonMainNode!=null) {
 						listeDesMapsProduitDsListe.clear();
 						for (int i = 0; i < jsonMainNode.length(); i++) {
 							JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
@@ -159,23 +158,20 @@ public class RemplirListe extends BaseActivity{
 		public void onClick(View v) {
 			Log.i("ListeDeCourse","Suppress button");
 			int nombreDeProduit = listeDesMapsProduitDsListe.size();
-			String adresse=baseUrl+"listeProduits.php?action=delete";
+			String adresse=baseUrl+"faireCourses.php?action=annuler";
 			boolean supressionAEffectuer=false;
 			for(int i=0;i<nombreDeProduit; i++) {
 				if(listeDesMapsProduitDsListe.get(i).isSelected()) {
 					String noDuProduit=listeDesMapsProduitDsListe.get(i).getNo();
 					adresse+="&tabNoProduit[]="+noDuProduit;
-					Log.v("ListeDeCourse","Le produit = "+noDuProduit);
 					supressionAEffectuer=true;
 				}
 			}
-			if(supressionAEffectuer)
-				accessWebService(adresse);
+			if(supressionAEffectuer) accessWebService(adresse);
 		}
 	};
 	
 	private OnClickListener listenerAjouterListe=new AdapterView.OnClickListener(){
-		
 		@Override
 		public void onClick(View v) {
 			SharedPreferences pref = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
@@ -184,7 +180,7 @@ public class RemplirListe extends BaseActivity{
 			@SuppressWarnings("unchecked")
 			String noProduit=((HashMap<String,String>)(spinnerProduit.getSelectedItem())).get("produitId");
 			String qte=((EditText)findViewById(R.id.editTextQuantite)).getText().toString();
-			String adresse=baseUrl+"listeCourses.php?action=ajout&produitId="+noProduit+"&qte="+qte+"&id="+id;
+			String adresse=baseUrl+"index.php?tag=addProductToList&produitId="+noProduit+"&qte="+qte+"&id="+id;
 			Log.i("ListeDeCourse",adresse);
 			accessWebService(adresse);
 		}

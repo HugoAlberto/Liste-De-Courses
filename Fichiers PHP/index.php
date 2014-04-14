@@ -58,9 +58,13 @@ if (isset($_GET['tag']) && $_GET['tag'] != '') {
 			echo productList_function($_GET['id']);
 			break;
 
-		case 'ProductListFromRadius';
+		case 'productListFromRadius';
 			// request list's product from a radius
 			echo productListFromRadius_function($_GET['rayon']);
+			break;
+
+		case 'radiusList';
+			echo radiusList_function();
 			break;
 
 		default:

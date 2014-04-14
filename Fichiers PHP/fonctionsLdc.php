@@ -238,6 +238,7 @@ function addProductToList_function($noProduit,$qte,$ownId) {
  * @return success or error
  */
 function productList_function($ownId) {
+	global $con;
 	$result = mysqli_query($con,"SELECT id FROM listeNom WHERE owner = $ownId");
 	if ($result) {
 		$listeId = mysqli_fetch_row($result);
@@ -260,6 +261,7 @@ function productList_function($ownId) {
  * @return array of products
  */
 function productListFromRadius_function($nomRayon) {
+	global $con;
 	$sql = "SELECT produitId,produitLib FROM produit WHERE rayonId=(select rayonId from rayon where rayonLib='$nomRayon')"; 
 	$result = mysqli_query($con,$sql);
 	$json = array();
@@ -271,4 +273,20 @@ function productListFromRadius_function($nomRayon) {
 		return json_encode($json); 
 	}
 }
+
+/**
+ * Radius List
+ *
+ * @return array of radiuses
+ */
+function radiusList_function() {
+	global $con;
+	$result = mysqli_query($con,"SELECT * FROM rayon ORDER BY rayonOrdre"); 
+	if(mysqli_num_rows($result)) {
+		$monTableau = array();
+		while($ligne=mysqli_fetch_assoc($result)) {
+			$monTableau['rayonInfos'][]=$ligne;
+		}
+		return json_encode($monTableau);
+	}
 ?>
