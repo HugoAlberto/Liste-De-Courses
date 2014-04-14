@@ -232,25 +232,43 @@ function addProductToList_function($noProduit,$qte,$ownId) {
 }
 
 /**
- * ListProduct
+ * Product List
  *
  * @param ownerId
  * @return success or error
  */
-function listProducts_function($ownId) {
+function productList_function($ownId) {
 	$result = mysqli_query($con,"SELECT id FROM listeNom WHERE owner = $ownId");
 	if ($result) {
 		$listeId = mysqli_fetch_row($result);
 		$response = array();
 		$result = mysqli_query($con,"SELECT liste.produitId AS produitId ,produitLib,listeQte FROM liste INNER JOIN produit on produit.produitId = liste.produitId WHERE listeId = $listeId[0]");
-		while($row = mysqli_fetch_assoc($result))
-		{
+		while($row = mysqli_fetch_assoc($result)) {
 			$response['listeDeCourse'][] = $row;
 		}
 		return json_encode($response);
 	} else {
 		$response["error"] = 1;
 		return json_encode($response);
+	}
+}
+
+/**
+ * Product List from Radius
+ *
+ * @param radius name
+ * @return array of products
+ */
+function productListFromRadius_function($nomRayon) {
+	$sql = "SELECT produitId,produitLib FROM produit WHERE rayonId=(select rayonId from rayon where rayonLib='$nomRayon')"; 
+	$result = mysqli_query($con,$sql);
+	$json = array();
+
+	if(mysqli_num_rows($result)) {
+		while($row=mysqli_fetch_assoc($result)) {
+			$json['produitsDuRayon'][]=$row;
+		}
+		return json_encode($json); 
 	}
 }
 ?>

@@ -53,9 +53,14 @@ if (isset($_GET['tag']) && $_GET['tag'] != '') {
 			echo addProductToList_function($_GET['produitId'],$_GET['qte'],$_GET['id']);
 			break;
 
-		case 'vue':
+		case 'productList':
 			// request list's products
-			echo listProducts_function($_GET['id']);
+			echo productList_function($_GET['id']);
+			break;
+
+		case 'ProductListFromRadius';
+			// request list's product from a radius
+			echo productListFromRadius_function($_GET['rayon']);
 			break;
 
 		default:
