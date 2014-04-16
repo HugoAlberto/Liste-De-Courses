@@ -6,8 +6,8 @@
  *
  * @package 	ListeDeCourses
  * @license 	http://opensource.org/licenses/gpl-license.php  GNU Public License
- * @author 		Hugo Alberto <alberto.hugo05@gmail.com>
- * @link 		http://alberto-hugo.com/
+ * @author 	Hugo Alberto <alberto.hugo05@gmail.com>
+ * @link 	http://alberto-hugo.com/
  * @version 	1.0
  */
 namespace ListeDeCourses;
