@@ -25,7 +25,7 @@ function login_function($email,$password) {
 	// request user with the same email and password
 	$result = mysqli_query($con,"SELECT id, nom, email, pass FROM membre WHERE email = '".$email."' AND pass = password('".$password."')") or die(mysql_error());
 	$rowNumber = mysqli_num_rows($result);
-	if ($rowNumber > 0) {
+	if ($rowNumber == 1) {
 		// user found
 		$result = mysqli_fetch_array($result);
 		$user = $result;
@@ -53,7 +53,7 @@ function login_function($email,$password) {
 function register_function($name, $email, $password) {
 	global $con;
 	// request user with the same email
-	$result = mysqli_query($con,"SELECT email from membre WHERE email = '$email'");
+	$result = mysqli_query($con,"SELECT email from membre WHERE email = '".$email."'");
 	$rowNumber = mysqli_num_rows($result);
 	if ($rowNumber == 1) {
 		// user exist 
@@ -116,7 +116,8 @@ function share_function($email,$userId) {
 	global $con;
 	// request users with the same email
 	$result = mysqli_query($con,"SELECT id FROM membre WHERE email = '".$email."'");
-	if($result) {
+	$rowNumber = mysqli_num_rows($result);
+	if ($rowNumber == 1) {
 		// if a user was found
 		$row = mysqli_fetch_row($result);
 		$userIdToAdd = $row[0];
@@ -170,7 +171,8 @@ function deleteSharedUser_function($email, $userId) {
 	global $con;
 	// request user id with the same mail
 	$idUser = mysqli_query($con,"SELECT id FROM membre WHERE email = '".$email."'");
-	if ($idUser) {
+	$rowNumber = mysqli_num_rows($idUser);
+	if ($rowNumber == 1) {
 		$row = mysqli_fetch_row($idUser);
 		$userIdToDelete = $row[0];
 		// request delete with the founded id
@@ -275,7 +277,8 @@ function productList_function($userId) {
 	global $con;
 	// request list id with the same user's id
 	$result = mysqli_query($con,"SELECT id FROM listeNom WHERE owner = $userId");
-	if ($result) {
+	$rowNumber = mysqli_num_rows($result);
+	if ($rowNumber > 0) {
 		$listId = mysqli_fetch_row($result);
 		$response = array();
 		// request products from user's list
