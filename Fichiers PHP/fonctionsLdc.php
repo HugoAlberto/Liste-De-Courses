@@ -22,9 +22,10 @@ include("commun.php");
  */
 function login_function($email,$password) {
 	global $con;
-	$result = mysqli_query($con,"SELECT * FROM membre WHERE email = '$email'") or die(mysql_error());
-	$row = mysqli_num_rows($result);
-	if ($row > 0) {
+	// request user with the same email and password
+	$result = mysqli_query($con,"SELECT id, nom, email, pass FROM membre WHERE email = '".$email."' AND pass = password('".$password."')") or die(mysql_error());
+	$rowNumber = mysqli_num_rows($result);
+	if ($rowNumber > 0) {
 		// user found
 		$result = mysqli_fetch_array($result);
 		$user = $result;
@@ -51,32 +52,30 @@ function login_function($email,$password) {
  */
 function register_function($name, $email, $password) {
 	global $con;
+	// request user with the same email
 	$result = mysqli_query($con,"SELECT email from membre WHERE email = '$email'");
 	$rowNumber = mysqli_num_rows($result);
-	if ($rowNumber > 0) {
-		// user existed 
+	if ($rowNumber == 1) {
+		// user exist 
 		$response["error"] = 2;
 		$response["error_msg"] = "User already exist";
 		return json_encode($response);		
 	} else {
-		// user not existed
-		$result = mysqli_query($con,"INSERT INTO membre(id, nom, email,pass) VALUES(NULL, '$name', '$email',password('$password'))");
-		// check for successful store
+		// user don't exist
+		$result = mysqli_query($con,"INSERT INTO membre(id, nom, email, pass) VALUES(NULL, '".$name."', '".$email."',password('".$password."'))");
 		if ($result) {
-			// get user details 
+			// user stored
 			$uid = mysqli_insert_id($con); // last inserted id
+			// get user details 
 			$result = mysqli_query($con,"SELECT * FROM membre WHERE id = $uid");
-			$test = "SELECT * FROM membre WHERE id = $uid";
-			// return user details
 			$user = mysqli_fetch_array($result);
-			// user stored successfully
 			$response["success"] = 1;
 			$response["uid"] = $user["unique_id"];
 			$response["user"]["name"] = $user["name"];
 			$response["user"]["email"] = $user["email"];
 			return json_encode($response);
 		} else {
-			// user failed to store
+			// user not stored
 			$response["error"] = 1;
 			$response["error_msg"] = "Error occured in Registartion";
 			return json_encode($response);
@@ -93,13 +92,14 @@ function register_function($name, $email, $password) {
  */
 function newPassword_function($password, $userId) {
 	global $con;
+	// request a password update
 	$result = mysqli_query($con,"UPDATE membre SET pass = password('".$password."') WHERE id = $userId;");
 	if($result) {
 		// password changed successfully
 		$response["success"] = 2;
 		return json_encode($response);
 	} else {
-		// error in password changing
+		// error changing the password
 		$response["error"] = 2;
 		return json_encode($response);
 	}
@@ -114,18 +114,21 @@ function newPassword_function($password, $userId) {
  */
 function share_function($email,$userId) {
 	global $con;
+	// request users with the same email
 	$result = mysqli_query($con,"SELECT id FROM membre WHERE email = '".$email."'");
 	if($result) {
+		// if a user was found
 		$row = mysqli_fetch_row($result);
-		$lIdUser = $row[0];
+		$userIdToAdd = $row[0];
+		// request list id where the owner of the list is the user
 		$result = mysqli_query($con,"SELECT id FROM listeNom WHERE owner = $userId");
 		while ($row = mysqli_fetch_row($result)) {
-			mysqli_query($con,"INSERT INTO Partage (membreId, membreQuiPartageId, listeId) VALUES ($lIdUser, $userId, $row[0])");
+			mysqli_query($con,"INSERT INTO partage (membreId, membreQuiPartageId, listeId) VALUES ($userIdToAdd, $userId, $row[0])");
 		}
 		$response["success"] = 1;
 		return json_encode($response);
 	} else {
-		// No user with this email
+		// if no users was found
 		$response["noUserExisting"] = 1;
 		return json_encode($response);
 	}
@@ -134,20 +137,23 @@ function share_function($email,$userId) {
 /**
  * Lists shared with 
  *
- * @param integer $login User's Login
+ * @param integer $userId User's Id
  * @return array with users mail
  */
-function listSharedWith_function($login) {
+function listSharedWith_function($userId) {
 	global $con;
-	$result=mysqli_query($con,"SELECT email FROM membre INNER JOIN Partage ON membreId = id WHERE membreQuiPartageId = $login");
-	if(mysqli_num_rows($result)) {
+	// request email of users you share your list with
+	$result=mysqli_query($con,"SELECT email FROM membre INNER JOIN partage ON membreId = id WHERE membreQuiPartageId = $userId");
+	$rowNumber = mysqli_num_rows($result);
+	if ($rowNumber > 0) {
+		// users were found
 		$monTableau = array();
 		while($ligne = mysqli_fetch_assoc($result)) {
 			$monTableau['membreNom'][] = $ligne;
 		}
 		return json_encode($monTableau);
 	} else {
-		// no list found for the user
+		// users were not found
 		$monTableau['error'] = "You share with no one :(";
 		return json_encode($monTableau);
 	}
@@ -162,14 +168,24 @@ function listSharedWith_function($login) {
  */
 function deleteSharedUser_function($email, $userId) {
 	global $con;
-	$idUser = mysqli_query($con,"SELECT id FROM membre WHERE email='".$email."'");
-	$row = mysqli_fetch_row($idUser);
-	$lIdUser = $row[0];
-	$result=mysqli_query($con,"DELETE FROM Partage WHERE membreId=$lIdUser AND membreQuiPartageId=$userId");
-	if ($result) {
-		$response["success"] = 1;
-		return json_encode($response);
+	// request user id with the same mail
+	$idUser = mysqli_query($con,"SELECT id FROM membre WHERE email = '".$email."'");
+	if ($idUser) {
+		$row = mysqli_fetch_row($idUser);
+		$userIdToDelete = $row[0];
+		// request delete with the founded id
+		$result = mysqli_query($con,"DELETE FROM partage WHERE membreId = $userIdToDelete AND membreQuiPartageId = $userId");
+		if ($result) {
+			// delete successful
+			$response["success"] = 1;
+			return json_encode($response);
+		} else {
+			// error while deletion
+			$response["error"] = 1;
+			return json_encode($response);
+		}
 	} else {
+		// no user id found
 		$response["error"] = 1;
 		return json_encode($response);
 	}
@@ -178,34 +194,38 @@ function deleteSharedUser_function($email, $userId) {
 /**
  * Buy Product
  *
- * @param array $tabNoProduit Array of product number
- * @param integer $noListeEnCours List number
+ * @param array $productArray Array of product number
+ * @param integer $noCurrentList List number
  * @return void
  */
-function buyProduct_function($tabNoProduit,$noListeEnCours) {
+function buyProduct_function($productArray,$noCurrentList) {
 	global $con;
-	foreach($tabNoProduit as $noProduit) {
-		mysqli_query($con,"UPDATE liste SET achete = 1 WHERE produitId = $noProduit AND listeId = $noListeEnCours");
+	foreach($productArray as $noProduit) {
+		// update request on bought products
+		mysqli_query($con,"UPDATE liste SET achete = 1 WHERE produitId = $noProduit AND listeId = $noCurrentList");
 	}
 }
 
 /**
  * Do Shopping List
  *
- * @param integer $noListeEnCours Current list number
+ * @param integer $noCurrentList Current list number
  * @return products array
  */
-function listDoShopping_function($noListeEnCours) {
+function listDoShopping_function($noCurrentList) {
 	global $con;
-	$sql = "SELECT produit.produitId AS produitId, produitLib, listeQte, rayon.rayonId AS rayonId, rayonLib FROM produit INNER JOIN rayon ON rayon.rayonId=produit.rayonId INNER JOIN liste ON liste.produitId=produit.produitId WHERE achete=0 AND liste.listeId='".$noListeEnCours."'";
-	$result = mysqli_query($con,$sql);
-	if(mysqli_num_rows($result)) {
-		$monTableau = array();
+	// request products infos for the current list
+	$result = mysqli_query($con,"SELECT produit.produitId AS produitId, produitLib, listeQte, rayon.rayonId AS rayonId, rayonLib FROM produit INNER JOIN rayon ON rayon.rayonId=produit.rayonId INNER JOIN liste ON liste.produitId=produit.produitId WHERE achete=0 AND liste.listeId=$noCurrentList");
+	$rowNumber = mysqli_num_rows($result);
+	if ($rowNumber > 0) {
+		// products were found
+		$response = array();
 		while($ligne = mysqli_fetch_assoc($result)) {
-			$monTableau['coursesAFaire'][] = $ligne;
+			$response['coursesAFaire'][] = $ligne;
 		}
-		return json_encode($monTableau);
+		return json_encode($response);
 	} else {
+		// no product were found
 		$response["error"] = 1;
 		return json_encode($response);
 	}
@@ -215,20 +235,31 @@ function listDoShopping_function($noListeEnCours) {
  * AddProductToList
  * 
  * @tags
- * @param integer $noProduit Product number
- * @param integer $qte Product quantity
- * @param integer $ownId Owner Id of the list
+ * @param integer $noProduct Product number
+ * @param integer $quantity Product quantity
+ * @param integer $userId User Id of the list
  * @return sucess or error
  */
-function addProductToList_function($noProduit,$qte,$ownId) {
+function addProductToList_function($noProduct,$quantity,$userId) {
 	global $con;
-	$result = mysqli_query($con,"SELECT id FROM listeNom WHERE owner = $ownId");
-	$listeId = mysqli_fetch_row($result);
-	$result = mysqli_query($con,"INSERT INTO liste(listeId,produitId,listeQte) VALUES($listeId[0],$noProduit,$qte)");
-	if($result) {
-		$response["success"] = 1;
-		return json_encode($response);
+	// request list id with the same user's id
+	$result = mysqli_query($con,"SELECT id FROM listeNom WHERE owner = $userId");
+	$listId = mysqli_fetch_row($result);
+	if ($listId) {
+		// list were found
+		// insert request
+		$result = mysqli_query($con,"INSERT INTO liste(listeId,produitId,listeQte) VALUES($listId[0],$noProduct,$quantity)");
+		if($result) {
+			// successful insert
+			$response["success"] = 1;
+			return json_encode($response);
+		} else {
+			// error
+			$response["error"] = 1;
+			return json_encode($response);
+		}
 	} else {
+		// no list were found
 		$response["error"] = 1;
 		return json_encode($response);
 	}
@@ -237,21 +268,24 @@ function addProductToList_function($noProduit,$qte,$ownId) {
 /**
  * Product List
  *
- * @param integer $ownId Owner Id
+ * @param integer $userId User Id
  * @return success or error
  */
-function productList_function($ownId) {
+function productList_function($userId) {
 	global $con;
-	$result = mysqli_query($con,"SELECT id FROM listeNom WHERE owner = $ownId");
+	// request list id with the same user's id
+	$result = mysqli_query($con,"SELECT id FROM listeNom WHERE owner = $userId");
 	if ($result) {
-		$listeId = mysqli_fetch_row($result);
+		$listId = mysqli_fetch_row($result);
 		$response = array();
-		$result = mysqli_query($con,"SELECT liste.produitId AS produitId ,produitLib,listeQte FROM liste INNER JOIN produit on produit.produitId = liste.produitId WHERE listeId = $listeId[0]");
+		// request products from user's list
+		$result = mysqli_query($con,"SELECT liste.produitId AS produitId ,produitLib,listeQte FROM liste INNER JOIN produit on produit.produitId = liste.produitId WHERE listeId = $listId[0]");
 		while($row = mysqli_fetch_assoc($result)) {
 			$response['listeDeCourse'][] = $row;
 		}
 		return json_encode($response);
 	} else {
+		// error
 		$response["error"] = 1;
 		return json_encode($response);
 	}
@@ -260,20 +294,25 @@ function productList_function($ownId) {
 /**
  * Product List from Radius
  *
- * @param string $nomRayon Radius' name
+ * @param string $radiusName Radius' name
  * @return array of products
  */
-function productListFromRadius_function($nomRayon) {
+function productListFromRadius_function($radiusName) {
 	global $con;
-	$sql = "SELECT produitId,produitLib FROM produit WHERE rayonId=(select rayonId from rayon where rayonLib='$nomRayon')"; 
-	$result = mysqli_query($con,$sql);
-	$json = array();
-
-	if(mysqli_num_rows($result)) {
-		while($row=mysqli_fetch_assoc($result)) {
-			$json['produitsDuRayon'][]=$row;
+	// request products from a radius
+	$result = mysqli_query($con,"SELECT produitId, produitLib FROM produit WHERE rayonId=(SELECT rayonId FROM rayon WHERE rayonLib='$radiusName')");
+	$rowNumber = mysqli_num_rows($result);
+	if ($rowNumber > 0) {
+		// products were found
+		$response = array();
+		while($row = mysqli_fetch_assoc($result)) {
+			$response['produitsDuRayon'][] = $row;
 		}
-		return json_encode($json); 
+		return json_encode($response); 
+	} else {
+		// no product were found
+		$response["error"] = 1;
+		return json_encode($response);
 	}
 }
 
@@ -284,13 +323,20 @@ function productListFromRadius_function($nomRayon) {
  */
 function radiusList_function() {
 	global $con;
-	$result = mysqli_query($con,"SELECT * FROM rayon ORDER BY rayonOrdre"); 
-	if(mysqli_num_rows($result)) {
-		$monTableau = array();
-		while($ligne=mysqli_fetch_assoc($result)) {
-			$monTableau['rayonInfos'][]=$ligne;
+	// request radiuses
+	$result = mysqli_query($con,"SELECT rayonId, rayonLib, rayonOrdre FROM rayon ORDER BY rayonOrdre"); 
+	$rowNumber = mysqli_num_rows($result);
+	if ($rowNumber > 0) {
+		// radiuses were found
+		$response = array();
+		while($ligne = mysqli_fetch_assoc($result)) {
+			$response['rayonInfos'][] = $ligne;
 		}
-		return json_encode($monTableau);
+		return json_encode($response);
+	} else {
+		// no radius were found
+		$response["error"] = 1;
+		return json_encode($response);
 	}
 }
 ?>
