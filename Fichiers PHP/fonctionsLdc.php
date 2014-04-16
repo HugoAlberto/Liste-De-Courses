@@ -1,21 +1,23 @@
 <?php
 /**
- * FonctionsListeDeCourses
+ * ListeDeCourses Function File.
  *
- * @author Hugo Alberto
- * @copyright HugoAlberto
- * @link http://alberto-hugo.com/
- * @see https://github.com/HugoAlberto/Liste-De-Courses
- * @version 1.0
+ * Fonctions used by the Android App ListeDeCourses
+ *
+ * @package 	ListeDeCourses
+ * @license 	http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @author 		Hugo Alberto <alberto.hugo05@gmail.com>
+ * @link 		http://alberto-hugo.com/
+ * @version 	1.0
  */
-
+namespace ListeDeCourses;
 include("commun.php");
 
 /**
  * Login
  *
- * @param email
- * @param password
+ * @param string $email User's E-mail
+ * @param string $password User's password
  * @return array with success, user id, name and email
  */
 function login_function($email,$password) {
@@ -42,9 +44,9 @@ function login_function($email,$password) {
 /**
  * Register
  *
- * @param name
- * @param email
- * @param password
+ * @param string $name User's name
+ * @param string $email User's E-mail
+ * @param string $password User's Password
  * @return array with success, user id, name and email
  */
 function register_function($name, $email, $password) {
@@ -85,8 +87,8 @@ function register_function($name, $email, $password) {
 /**
  * New password
  *
- * @param password
- * @param userId
+ * @param string $password New password
+ * @param integer $userId App User's Id
  * @return success or error
  */
 function newPassword_function($password, $userId) {
@@ -106,8 +108,8 @@ function newPassword_function($password, $userId) {
 /**
  * List share
  *
- * @param email
- * @param userId
+ * @param string $email E-mail you want to share your list with
+ * @param integer $userId App User's Id
  * @return success or error
  */
 function share_function($email,$userId) {
@@ -132,7 +134,7 @@ function share_function($email,$userId) {
 /**
  * Lists shared with 
  *
- * @param login
+ * @param integer $login User's Login
  * @return array with users mail
  */
 function listSharedWith_function($login) {
@@ -154,8 +156,8 @@ function listSharedWith_function($login) {
 /**
  * Delete Shared User
  *
- * @param email
- * @param userId
+ * @param string $email E-mail you delete
+ * @param integer $userId App User's Id
  * @return success or error
  */
 function deleteSharedUser_function($email, $userId) {
@@ -176,8 +178,8 @@ function deleteSharedUser_function($email, $userId) {
 /**
  * Buy Product
  *
- * @param tabNoProduit
- * @param noListeEnCours
+ * @param array $tabNoProduit Array of product number
+ * @param integer $noListeEnCours List number
  * @return void
  */
 function buyProduct_function($tabNoProduit,$noListeEnCours) {
@@ -190,7 +192,7 @@ function buyProduct_function($tabNoProduit,$noListeEnCours) {
 /**
  * Do Shopping List
  *
- * @param noCurrentList
+ * @param integer $noListeEnCours Current list number
  * @return products array
  */
 function listDoShopping_function($noListeEnCours) {
@@ -212,9 +214,10 @@ function listDoShopping_function($noListeEnCours) {
 /**
  * AddProductToList
  * 
- * @param noProduit
- * @param quantity
- * @param ownerId
+ * @tags
+ * @param integer $noProduit Product number
+ * @param integer $qte Product quantity
+ * @param integer $ownId Owner Id of the list
  * @return sucess or error
  */
 function addProductToList_function($noProduit,$qte,$ownId) {
@@ -234,7 +237,7 @@ function addProductToList_function($noProduit,$qte,$ownId) {
 /**
  * Product List
  *
- * @param ownerId
+ * @param integer $ownId Owner Id
  * @return success or error
  */
 function productList_function($ownId) {
@@ -257,7 +260,7 @@ function productList_function($ownId) {
 /**
  * Product List from Radius
  *
- * @param radius name
+ * @param string $nomRayon Radius' name
  * @return array of products
  */
 function productListFromRadius_function($nomRayon) {
@@ -289,4 +292,5 @@ function radiusList_function() {
 		}
 		return json_encode($monTableau);
 	}
+}
 ?>
