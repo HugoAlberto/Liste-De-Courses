@@ -6,11 +6,10 @@
  *
  * @package 	ListeDeCourses
  * @license 	http://opensource.org/licenses/gpl-license.php  GNU Public License
- * @author 	Hugo Alberto <alberto.hugo05@gmail.com>
- * @link 	http://alberto-hugo.com/
+ * @author 		Hugo Alberto <alberto.hugo05@gmail.com>
+ * @link 		http://alberto-hugo.com/
  * @version 	1.0
  */
-namespace ListeDeCourses;
 include("commun.php");
 
 /**
@@ -340,6 +339,21 @@ function radiusList_function() {
 		// no radius were found
 		$response["error"] = 1;
 		return json_encode($response);
+	}
+}
+
+/**
+ * Delete Product from list
+ *
+ * @param integer $listId
+ * @return void
+ */
+function deleteProductFromList_function($listId) {
+	global $con;
+	$productArray = $listId;
+	foreach($productArray as $productId) {
+		// delete request
+		mysqli_query($con,"DELETE FROM liste WHERE produitId = ".$productId." and listeId = ".$listId);
 	}
 }
 ?>

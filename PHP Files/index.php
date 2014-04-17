@@ -1,5 +1,6 @@
 <?php
-include("fonctionsLdc.php");
+require_once("fonctionsLdc.php");
+
 if (isset($_GET['tag']) && $_GET['tag'] != '') {
 
 	$tag = $_GET['tag'];
@@ -40,7 +41,7 @@ if (isset($_GET['tag']) && $_GET['tag'] != '') {
 
 		case 'buyProduct':
 			// buy a product
-			echo buyProduct_function($_GET['tabNoProduit'],0);
+			buyProduct_function($_GET['tabNoProduit'],0);
 			break;
 
 		case 'listDoShopping':
@@ -48,9 +49,14 @@ if (isset($_GET['tag']) && $_GET['tag'] != '') {
 			echo listDoShopping_function(0);
 			break;
 
-		case 'addProductToList';
+		case 'addProductToList':
 			// add a product to your list
 			echo addProductToList_function($_GET['produitId'],$_GET['qte'],$_GET['id']);
+			break;
+
+		case 'deleteProductFromList':
+			// delete a product from your list
+			echo deleteProductFromList_function($_GET['tabNoProduit']);
 			break;
 
 		case 'productList':
@@ -58,18 +64,20 @@ if (isset($_GET['tag']) && $_GET['tag'] != '') {
 			echo productList_function($_GET['id']);
 			break;
 
-		case 'productListFromRadius';
+		case 'productListFromRadius':
 			// request list's product from a radius
 			echo productListFromRadius_function($_GET['rayon']);
 			break;
 
-		case 'radiusList';
+		case 'radiusList':
+			// request radius list
 			echo radiusList_function();
 			break;
 
 		default:
 			echo "Invalid Request";
 			break;
+
 	}
 } else {
 	echo "Access Denied";

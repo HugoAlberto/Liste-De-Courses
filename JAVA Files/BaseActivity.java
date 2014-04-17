@@ -7,9 +7,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public abstract class BaseActivity extends Activity {
-	protected String url;
 	//protected String baseUrl="http://alberto-hugo.com/listeCourses/";
-	protected String baseUrl="http://10.0.2.2/listeCourses/";
+	protected String baseUrl="http://10.0.2.2/listeCourses/index.php";
 	abstract String url();
 	
 	protected void onCreate(Bundle savedInstanceState) {

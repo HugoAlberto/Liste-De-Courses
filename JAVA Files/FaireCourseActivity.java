@@ -12,8 +12,7 @@ public class FaireCourseActivity extends BaseActivity {
 	
 	Button btnShopping;
 	private AdapterExpandableRayonProduit monAdapter;
-	private String url = "index.php";
-	public String url(){return baseUrl+url+"?tag=listDoShopping";};
+	public String url(){return baseUrl+"?tag=listDoShopping";};
 	private ExpandableListView listeViewDesProduitsDeLaListeParRayons;
 
 	@Override

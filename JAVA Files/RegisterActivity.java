@@ -48,15 +48,17 @@ public class RegisterActivity extends BaseActivity {
 	/**
 	 * Url of the register web page
 	 */
-	private String url = "index.php";
-	public String url(){return baseUrl+url;};
+	public String url(){return baseUrl;};
 	
 	/**
 	 * Get the informations back
+	 * 
 	 * If the array is 'success' on the first cell
 	 * 	Get you the the dashboard page
 	 * Else
 	 * 	Show you an error message and set to null the preferences login and pass
+	 * 
+	 * @param string result json result
 	 */
 	@Override
 	void traiterDonneesRecues(String result) {
@@ -112,7 +114,7 @@ public class RegisterActivity extends BaseActivity {
 				String name = inputFullName.getText().toString();
 				String email = inputEmail.getText().toString();
 				String password = inputPassword.getText().toString();
-				String adresse=baseUrl+"index.php?tag=register&name="+name+"&email="+email+"&password="+password;
+				String adresse=url()+"?tag=register&name="+name+"&email="+email+"&password="+password;
 				accessWebService(adresse);
 				getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
 		        .edit()

@@ -20,8 +20,7 @@ public class LoginActivity extends BaseActivity {
 	EditText inputPassword;
 	TextView loginErrorMsg;
 
-	private String url = "index.php";
-	public String url(){return baseUrl+url;};
+	public String url(){return baseUrl;};
 	private static String KEY_SUCCESS = "success";
 	private static String UID = "uid";
 
@@ -44,7 +43,7 @@ public class LoginActivity extends BaseActivity {
 			public void onClick(View view) {				
 				String email = inputEmail.getText().toString();
 				String password = inputPassword.getText().toString();
-				String adresse=baseUrl+"index.php?tag=login&email="+email+"&password="+password;
+				String adresse=url()+"?tag=login&email="+email+"&password="+password;
 				accessWebService(adresse);
 				Log.i("LOGIN",adresse);
 				getSharedPreferences(PREFS_NAME,MODE_PRIVATE)

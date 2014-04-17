@@ -21,8 +21,7 @@ import android.widget.Spinner;
 
 public class RemplirListe extends BaseActivity{
 	
-	private String url = "index.php?tag=radiusList";
-	public String url(){return baseUrl+url;};
+	public String url(){return baseUrl+"?tag=radiusList";};
 	/**
 	 * Radius spinner
 	 */
@@ -33,11 +32,13 @@ public class RemplirListe extends BaseActivity{
 	private Spinner spinnerProduit;
 	/**
 	 * Add button
+	 * 
 	 * Add a product of a radius with the quantity desired in the list
 	 */
 	private Button boutonAjouter;
 	/**
 	 * Delete button
+	 * 
 	 * Delete selected product in the list
 	 */
 	private Button boutonSupprimer;
@@ -73,8 +74,7 @@ public class RemplirListe extends BaseActivity{
 		    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 		    	@SuppressWarnings("unchecked")
 				String nomDuRayon=((HashMap<String,String>)(spinnerRayon.getSelectedItem())).get("rayonLib");
-		    	Log.i("ListeDeCourse",nomDuRayon);
-	            accessWebService(baseUrl+"index.php?tag=productListFromRadius&rayon="+nomDuRayon);
+	            accessWebService(baseUrl+"?tag=productListFromRadius&rayon="+nomDuRayon);
 		    }
 		    public void onNothingSelected(AdapterView<?> parent) {
 		    // Another interface callback
@@ -100,7 +100,7 @@ public class RemplirListe extends BaseActivity{
 				SimpleAdapter sARayon = new SimpleAdapter(this,listeDesMapsRayon,R.layout.rayon_layout,new String[] { "rayonLib" },new int[] { R.id.itemLibelle});
 				try{
 					spinnerRayon.setAdapter(sARayon);
-					String adresse=baseUrl+"index.php?tag=productList&id="+id;
+					String adresse=baseUrl+"?tag=productList&id="+id;
 					accessWebService(adresse);
 				}
 				catch(NullPointerException e){
@@ -156,9 +156,8 @@ public class RemplirListe extends BaseActivity{
 	private OnClickListener listenerSupprimerListe=new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			Log.i("ListeDeCourse","Suppress button");
 			int nombreDeProduit = listeDesMapsProduitDsListe.size();
-			String adresse=baseUrl+"faireCourses.php?action=annuler";
+			String adresse=baseUrl+"?tag=deleteProductFromList";
 			boolean supressionAEffectuer=false;
 			for(int i=0;i<nombreDeProduit; i++) {
 				if(listeDesMapsProduitDsListe.get(i).isSelected()) {
@@ -180,8 +179,7 @@ public class RemplirListe extends BaseActivity{
 			@SuppressWarnings("unchecked")
 			String noProduit=((HashMap<String,String>)(spinnerProduit.getSelectedItem())).get("produitId");
 			String qte=((EditText)findViewById(R.id.editTextQuantite)).getText().toString();
-			String adresse=baseUrl+"index.php?tag=addProductToList&produitId="+noProduit+"&qte="+qte+"&id="+id;
-			Log.i("ListeDeCourse",adresse);
+			String adresse=baseUrl+"?tag=addProductToList&produitId="+noProduit+"&qte="+qte+"&id="+id;
 			accessWebService(adresse);
 		}
 	};

@@ -3,7 +3,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -48,7 +47,6 @@ public class MagasinActivity extends BaseActivity {
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.i("ListeDeCourse","MagasinActivity::onCreate(Bundle savedInstanceState)");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_magasin);
 		boutonAjouter=(Button)findViewById(R.id.buttonAjouterRayon);
@@ -58,8 +56,7 @@ public class MagasinActivity extends BaseActivity {
 		boutonModifier=(Button)findViewById(R.id.buttonModifierRayon);
 		boutonModifier.setOnClickListener(listenerModifierRayon);
 	}
-	private String url = "listeRayons.php";
-	public String url(){return baseUrl+url;};
+	public String url(){return baseUrl;};
 	public List<ModelRayon> listeDesRayons = new ArrayList<ModelRayon>();
 
 	@Override
@@ -85,7 +82,6 @@ public class MagasinActivity extends BaseActivity {
 			listeViewDesRayons.setAdapter(rayonAdapter);	  
 		}
 		catch(NullPointerException e){
-			Log.i("ListeDeCourse","Erreur au chargement des rayons");
 		}
 	}
 	/**
@@ -140,7 +136,6 @@ public class MagasinActivity extends BaseActivity {
 	private OnClickListener listenerSupprimerRayon=new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			Log.i("ListeDeCourse","Suppress button");
 			int nombreDeRayon = listeDesRayons.size();
 			String adresse=baseUrl+"listeRayons.php?action=delete";
 			boolean supressionAEffectuer=false;
@@ -148,7 +143,6 @@ public class MagasinActivity extends BaseActivity {
 				if(listeDesRayons.get(i).isSelected()) {
 					String noDuRayon=listeDesRayons.get(i).getNo();
 					adresse+="&tabNoRayon[]="+noDuRayon;
-					Log.v("ListeDeCourse","Le rayon = "+noDuRayon);
 					supressionAEffectuer=true;
 				}
 			}//For's end
@@ -161,7 +155,6 @@ public class MagasinActivity extends BaseActivity {
 		String nomR;
 		@Override
 		public void onClick(View v) {
-			Log.i("ListeDeCourse","Modify button");
 			int nombreDeRayon = listeDesRayons.size();
 			//How many radius selected
 			int unRayon=0;

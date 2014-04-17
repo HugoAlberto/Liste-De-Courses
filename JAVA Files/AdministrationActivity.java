@@ -47,16 +47,19 @@ public class AdministrationActivity extends BaseActivity {
 	private static String KEY_SUCCESS = "success";
 	private static String NO_USER_WITH_THIS_MAIL = "noUserExisting";
 
-	private String url = "index.php";
-	public String url(){return baseUrl+url;};
+	private String url = "?listSharedWith=";
+	public String url(){
+		SharedPreferences pref = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+	    final String id = pref.getString(PREF_ID, null);
+		return baseUrl+url+id;};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		SharedPreferences pref = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
 	    final String id = pref.getString(PREF_ID, null);
-		String adresse=baseUrl+"index.php?tag=listSharedWith&login="+id;
+		
+		String adresse=baseUrl+"?tag=listSharedWith&login="+id;
 		accessWebService(adresse);
 		
 		setContentView(R.layout.activity_administration);
@@ -66,7 +69,7 @@ public class AdministrationActivity extends BaseActivity {
 		btnModify.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
 				String pass = inputPassword.getText().toString();
-				String adresse=baseUrl+"index.php?tag=password&pass="+pass+"&from="+id;
+				String adresse=baseUrl+"?tag=password&pass="+pass+"&from="+id;
 				accessWebService(adresse);
 			}
 		});
@@ -76,7 +79,7 @@ public class AdministrationActivity extends BaseActivity {
 		btnShare.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
 				String share = inputShare.getText().toString();
-				String adresse=baseUrl+"index.php?tag=share&email="+share+"&from="+id;
+				String adresse=baseUrl+"?tag=share&email="+share+"&from="+id;
 				accessWebService(adresse);
 			}
 		});
@@ -85,7 +88,7 @@ public class AdministrationActivity extends BaseActivity {
 		btnDelete.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				String userMail = userSpinner.getSelectedItem().toString();
-				String adresse=baseUrl+"index.php?tag=deleteSharedUser&delete="+userMail+"&from="+id;
+				String adresse=baseUrl+"?tag=deleteSharedUser&delete="+userMail+"&from="+id;
 				accessWebService(adresse);
 				Log.i("LOGIN",adresse);
 			}
@@ -102,12 +105,9 @@ public class AdministrationActivity extends BaseActivity {
 				for (int i = 0; i < jsonArray.length(); i++) {
 				    JSONObject jsonObject = jsonArray.getJSONObject(i);
 				    userName.add(jsonObject.optString("email"));
-				    Log.i("lesUsers", jsonObject.optString("email"));
 				}
-			} else {
-				userName.add(json.getString("error"));
-				Log.i("noUsers", json.getString("error"));
 			}
+			
 			if (json.getString(KEY_SUCCESS) != null) {
 				String res = json.getString(KEY_SUCCESS);
 				if(Integer.parseInt(res) == 1) {
