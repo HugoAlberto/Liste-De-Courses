@@ -43,6 +43,7 @@
     <string name="textShare">Enter an Email here</string>
     <string name="nomProduit">Product name :</string>
     <string name="qteProduit">Quantity :</string>
-    
-
+    <string name="selectList">Select a list : </string>
+	<string name="selectedList">List selected : </string>
+	
 </resources>
