@@ -35,8 +35,7 @@ function login_function($email,$password) {
 		return json_encode($response);
 	} else {
 		// user not found
-		$response["error"] = 1;
-		$response["error_msg"] = "Incorrect email or password!";
+		$response["success"] = 0;
 		return json_encode($response);
 	}
 }
@@ -44,6 +43,7 @@ function login_function($email,$password) {
 /**
  * Register
  *
+ * @todo create a list for the registered user
  * @param string $name User's name
  * @param string $email User's E-mail
  * @param string $password User's Password
@@ -56,7 +56,7 @@ function register_function($name, $email, $password) {
 	$rowNumber = mysqli_num_rows($result);
 	if ($rowNumber == 1) {
 		// user exist 
-		$response["error"] = 2;
+		$response["success"] = 0;
 		$response["error_msg"] = "User already exist";
 		return json_encode($response);		
 	} else {
@@ -69,13 +69,13 @@ function register_function($name, $email, $password) {
 			$result = mysqli_query($con,"SELECT * FROM membre WHERE id = $uid");
 			$user = mysqli_fetch_array($result);
 			$response["success"] = 1;
-			$response["uid"] = $user["unique_id"];
-			$response["user"]["name"] = $user["name"];
+			$response["uid"] = $user["id"];
+			$response["user"]["name"] = $user["nom"];
 			$response["user"]["email"] = $user["email"];
 			return json_encode($response);
 		} else {
 			// user not stored
-			$response["error"] = 1;
+			$response["success"] = 0;
 			$response["error_msg"] = "Error occured in Registartion";
 			return json_encode($response);
 		}
@@ -210,13 +210,13 @@ function buyProduct_function($productArray,$noCurrentList) {
 /**
  * Do Shopping List
  *
- * @param integer $noCurrentList Current list number
+ * @param integer $listId Current list number
  * @return products array
  */
-function listDoShopping_function($noCurrentList) {
+function listDoShopping_function($listId) {
 	global $con;
 	// request products infos for the current list
-	$result = mysqli_query($con,"SELECT produit.produitId AS produitId, produitLib, listeQte, rayon.rayonId AS rayonId, rayonLib FROM produit INNER JOIN rayon ON rayon.rayonId=produit.rayonId INNER JOIN liste ON liste.produitId=produit.produitId WHERE achete=0 AND liste.listeId=$noCurrentList");
+	$result = mysqli_query($con,"SELECT produit.produitId AS produitId, produitLib, listeQte, rayon.rayonId AS rayonId, rayonLib FROM produit INNER JOIN rayon ON rayon.rayonId=produit.rayonId INNER JOIN liste ON liste.produitId=produit.produitId WHERE achete=0 AND liste.listeId=$listId");
 	$rowNumber = mysqli_num_rows($result);
 	if ($rowNumber > 0) {
 		// products were found
@@ -275,7 +275,7 @@ function addProductToList_function($noProduct,$quantity,$userId) {
 function productList_function($userId) {
 	global $con;
 	// request list id with the same user's id
-	$result = mysqli_query($con,"SELECT id FROM listeNom WHERE owner = $userId");
+	$result = mysqli_query($con,"SELECT id AS listeId FROM listeNom WHERE owner = $userId");
 	$rowNumber = mysqli_num_rows($result);
 	if ($rowNumber > 0) {
 		$listId = mysqli_fetch_row($result);
@@ -354,6 +354,34 @@ function deleteProductFromList_function($listId) {
 	foreach($productArray as $productId) {
 		// delete request
 		mysqli_query($con,"DELETE FROM liste WHERE produitId = ".$productId." and listeId = ".$listId);
+	}
+}
+
+/**
+ * Get Lists
+ *
+ * @param integer $userId
+ * @return array of lists
+ */
+function getLists_function($userId) {
+	global $con;
+	$listId = mysqli_query($con,"SELECT id AS listeId, nom AS listeNom FROM listeNom WHERE owner = $userId");
+	$response = array();
+	while($rowList = mysqli_fetch_assoc($listId)) {
+			$response['listeInfos'][] = $rowList;
+	}
+	// request shared lists
+	$listShared = mysqli_query($con,"SELECT listeId FROM partage WHERE membreId = $userId");
+	$rowNumber = mysqli_num_rows($listShared);
+	if ($rowNumber > 0) {
+		// shared lists
+		while($rowListShared = mysqli_fetch_assoc($listShared)) {
+			$response['listeInfos'][] = $rowListShared;
+		}
+		return json_encode($response);
+	} else {
+		// no shared lists
+		return json_encode($response);
 	}
 }
 ?>

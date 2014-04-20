@@ -46,7 +46,7 @@ if (isset($_GET['tag']) && $_GET['tag'] != '') {
 
 		case 'listDoShopping':
 			// request the do shopping list
-			echo listDoShopping_function(0);
+			echo listDoShopping_function($_GET['listId']);
 			break;
 
 		case 'addProductToList':
@@ -56,7 +56,7 @@ if (isset($_GET['tag']) && $_GET['tag'] != '') {
 
 		case 'deleteProductFromList':
 			// delete a product from your list
-			echo deleteProductFromList_function($_GET['tabNoProduit']);
+			deleteProductFromList_function($_GET['tabNoProduit']);
 			break;
 
 		case 'productList':
@@ -72,6 +72,11 @@ if (isset($_GET['tag']) && $_GET['tag'] != '') {
 		case 'radiusList':
 			// request radius list
 			echo radiusList_function();
+			break;
+
+		case 'getLists':
+			// request a list of lists
+			echo getLists_function($_GET['userId']);
 			break;
 
 		default:
