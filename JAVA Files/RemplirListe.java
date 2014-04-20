@@ -84,13 +84,14 @@ public class RemplirListe extends BaseActivity{
 	}
 
 	@Override
-	public void traiterDonneesRecues(String jsonResult){
+	public void traiterDonneesRecues(String jsonResult) {
 		SharedPreferences pref = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
 	    final String id = pref.getString(PREF_ID, null);
-		try{
+		try {
 			JSONObject jsonResponse = new JSONObject(jsonResult);
+			Log.i("listeDeCourses", jsonResult);
 			JSONArray jsonMainNode = jsonResponse.optJSONArray("rayonInfos");
-			if(jsonMainNode!=null){
+			if(jsonMainNode!=null) {
 				for (int i = 0; i < jsonMainNode.length(); i++) {
 					JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
 					String name = jsonChildNode.optString("rayonLib");
@@ -98,18 +99,18 @@ public class RemplirListe extends BaseActivity{
 					listeDesMapsRayon.add(creerMapRayon(name, number));
 				}
 				SimpleAdapter sARayon = new SimpleAdapter(this,listeDesMapsRayon,R.layout.rayon_layout,new String[] { "rayonLib" },new int[] { R.id.itemLibelle});
-				try{
+				try {
 					spinnerRayon.setAdapter(sARayon);
 					String adresse=baseUrl+"?tag=productList&id="+id;
 					accessWebService(adresse);
 				}
-				catch(NullPointerException e){
+				catch(NullPointerException e) {
 					Log.i("ListeDeCourse",listeDesMapsRayon.toString());
 				}
 			}
-			else{
+			else {
 				jsonMainNode = jsonResponse.optJSONArray("produitsDuRayon");
-				if(jsonMainNode!=null){
+				if(jsonMainNode!=null) {
 					listeDesMapsProduit.clear();
 					for (int i = 0; i < jsonMainNode.length(); i++) {
 						JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
@@ -125,7 +126,7 @@ public class RemplirListe extends BaseActivity{
 						Log.i("ListeDeCourse",listeDesMapsRayon.toString());
 					}
 				}
-				else{
+				else {
 					jsonMainNode = jsonResponse.optJSONArray("listeDeCourse");
 					if(jsonMainNode!=null) {
 						listeDesMapsProduitDsListe.clear();
@@ -138,10 +139,10 @@ public class RemplirListe extends BaseActivity{
 							listeDesMapsProduitDsListe.add(nouvelleListe);
 						}
 						ListeAdapter listeAdapter = new ListeAdapter(this,listeDesMapsProduitDsListe);
-						try{
+						try {
 							listViewProduits.setAdapter(listeAdapter);
 						}
-						catch(NullPointerException e){
+						catch(NullPointerException e) {
 							Log.i("ListeDeCourse",listeDesMapsProduitDsListe.toString());
 						}
 					}

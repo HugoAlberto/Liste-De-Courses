@@ -89,7 +89,7 @@ public class AdapterExpandableRayonProduit extends BaseExpandableListAdapter {
         View v = convertView;
         if (v == null) {
         	LayoutInflater inflator = context.getLayoutInflater();
-            v = inflator.inflate(R.layout.produit_layout, null);
+            v = inflator.inflate(R.layout.rayon_courses_layout, null);
         }
         TextView rayonName = (TextView) v.findViewById(R.id.itemLibelleRayon);
         String nomRayon = lesRayons.getRayon(groupPosition).getNom();
