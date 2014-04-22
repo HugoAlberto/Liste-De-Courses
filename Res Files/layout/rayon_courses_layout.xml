@@ -13,9 +13,9 @@
     <TextView
         android:id="@+id/itemLibelleRayon"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:textStyle="bold"
-        android:height="30dp" />
+        android:textSize="20sp" />
 
 </LinearLayout>
