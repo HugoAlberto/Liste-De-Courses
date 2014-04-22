@@ -16,7 +16,7 @@
     <string name="ajouter">Add</string>
     <string name="ajouterListe">Add a new product</string>
     <string name="title_activity_activite_faire_courses">Do shopping</string>
-    <string name="faire_courses">Do shopping!</string>
+    <string name="faire_courses">Do shopping</string>
     <string name="caddy">Got it !</string>
     <string name="annuler">Cancel</string>
     <string name="modifier">Modify</string>
@@ -27,7 +27,7 @@
     <string name="dashboard_title">Shopping List Homepage</string>
     <string name="dashboard_b1">Account administration</string>
     <string name="dashboard_b2">My shopping List</string>
-    <string name="dashboard_b3">Shopping</string>
+    <string name="dashboard_b3">Do shopping</string>
     <string name="logout">Logout Me</string>
     <string name="mail">Email</string>
     <string name="pass">Password</string>
