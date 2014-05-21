@@ -294,15 +294,15 @@ function productList_function($userId) {
 }
 
 /**
- * Product List from Radius
+ * Product List from shelf
  *
- * @param string $radiusName Radius' name
+ * @param string $shelfName shelf' name
  * @return array of products
  */
-function productListFromRadius_function($radiusName) {
+function productListFromShelf_function($shelfName) {
 	global $con;
-	// request products from a radius
-	$result = mysqli_query($con,"SELECT produitId, produitLib FROM produit WHERE rayonId=(SELECT rayonId FROM rayon WHERE rayonLib='$radiusName')");
+	// request products from a shelf
+	$result = mysqli_query($con,"SELECT produitId, produitLib FROM produit WHERE rayonId=(SELECT rayonId FROM rayon WHERE rayonLib='$shelfName')");
 	$rowNumber = mysqli_num_rows($result);
 	if ($rowNumber > 0) {
 		// products were found
@@ -319,24 +319,24 @@ function productListFromRadius_function($radiusName) {
 }
 
 /**
- * Radius List
+ * Shelves List
  *
- * @return array of radiuses
+ * @return array of shelves
  */
-function radiusList_function() {
+function shelfList_function() {
 	global $con;
-	// request radiuses
+	// request shelves
 	$result = mysqli_query($con,"SELECT rayonId, rayonLib, rayonOrdre FROM rayon ORDER BY rayonOrdre"); 
 	$rowNumber = mysqli_num_rows($result);
 	if ($rowNumber > 0) {
-		// radiuses were found
+		// shelves were found
 		$response = array();
 		while($ligne = mysqli_fetch_assoc($result)) {
 			$response['rayonInfos'][] = $ligne;
 		}
 		return json_encode($response);
 	} else {
-		// no radius were found
+		// no shelves were found
 		$response["error"] = 1;
 		return json_encode($response);
 	}

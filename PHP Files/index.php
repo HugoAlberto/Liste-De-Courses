@@ -64,14 +64,14 @@ if (isset($_GET['tag']) && $_GET['tag'] != '') {
 			echo productList_function($_GET['id']);
 			break;
 
-		case 'productListFromRadius':
-			// request list's product from a radius
-			echo productListFromRadius_function($_GET['rayon']);
+		case 'productListFromShelf':
+			// request list's product from a shelf
+			echo productListFromShelves_function($_GET['rayon']);
 			break;
 
-		case 'radiusList':
-			// request radius list
-			echo radiusList_function();
+		case 'shelfList':
+			// request shelf list
+			echo shelfList_function();
 			break;
 
 		case 'getLists':
